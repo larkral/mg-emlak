@@ -7,15 +7,28 @@ import { SiteFooter } from "@/components/site-footer"
 import { ListingCard } from "@/components/listing-card"
 import { supabase } from "@/lib/supabase"
 
-export default async function HomePage() {
-  const res = await supabase.from("listings").select("*")
-  const listings = res.data ?? []
-  
+// 🔥 KRİTİK FIX: cache kapatıyoruz
+export const dynamic = "force-dynamic"
 
-  const featured = listings.filter((l) => l.featured)
+export default async function HomePage() {
+  const { data, error } = await supabase
+    .from("listings")
+    .select("*")
+
+  if (error) {
+    console.log("Supabase error:", error)
+  }
+
+  const listings = data ?? []
+
+  const featured = listings.filter((l) => l.featured === true)
 
   const latest = [...listings]
-    .sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""))
+    .sort(
+      (a, b) =>
+        new Date(b.created_at || "").getTime() -
+        new Date(a.created_at || "").getTime()
+    )
     .slice(0, 6)
 
   return (
@@ -39,7 +52,6 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
           </div>
 
-          {/* HERO CONTENT */}
           <div className="absolute inset-0">
             <div className="mx-auto flex h-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
 
@@ -59,7 +71,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* SEARCH */}
           <div className="relative -mt-10 sm:-mt-16 z-10 mx-auto max-w-5xl px-4">
             <div className="rounded-2xl bg-white/95 backdrop-blur-xl p-4 sm:p-5 shadow-2xl border">
 
