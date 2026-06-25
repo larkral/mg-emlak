@@ -130,9 +130,14 @@ export function SiteFooter() {
           </p>
 
           <div className="flex gap-6 text-xs">
-            <span className="font-medium text-amber-600 hover:text-amber-500 cursor-pointer transition">
+            <a
+              href="https://www.instagram.com/gunarslan.tech/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-amber-600 hover:text-amber-500 cursor-pointer transition"
+            >
               GUNARSLAN.TECH TARAFINDAN TASARLANMIŞTIR.
-            </span>
+            </a>
           </div>
 
         </div>
