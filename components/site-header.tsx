@@ -42,24 +42,20 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
 
         {/* LOGO */}
-<Link href="/" className="flex items-center gap-3 group">
-  <div className="relative">
-    <img
-      src="/logo.png"
-      alt="MG Emlak"
-      className="h-11 w-auto object-contain transition-all duration-300 group-hover:scale-105"
-    />
-  </div>
+    <Link href="/" className="flex items-center gap-3 group">
+      <div className="flex items-center justify-center">
+        <img
+          src="/logo.png"
+          alt="MG Emlak"
+          className="h-9 w-auto object-contain"
+        />
+      </div>
 
-  <div className="hidden sm:flex flex-col">
-    <span className="text-sm font-bold tracking-tight text-foreground">
-      MG EMLAK
-    </span>
-    <span className="text-[11px] text-muted-foreground">
-      Afyonkarahisar Gayrimenkul
-    </span>
-  </div>
-</Link>
+      <span className="font-semibold tracking-tight text-foreground">
+        MG Emlak
+      </span>
+    </Link>
+
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-1">
 

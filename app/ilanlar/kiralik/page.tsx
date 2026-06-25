@@ -5,10 +5,10 @@ import { ListingsExplorer } from "@/components/listings-explorer"
 
 export default async function Page() {
   const { data: listings } = await supabase
-    .from("listings")
-    .select("*")
-    .eq("status", "kiralik")
-    .order("created_at", { ascending: false })
+  .from("listings")
+  .select("*")
+  .eq("status", "kiralik")
+  .order("created_at", { ascending: false })
 
   return (
     <div className="flex min-h-screen flex-col">
