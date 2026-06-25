@@ -21,9 +21,9 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { href: "/", label: "Ana Sayfa", icon: Home },
   { href: "/ilanlar", label: "Tümü", icon: List },
-  { href: "/ilanlar?type=satilik", label: "Satılık", icon: Building2, type: "satilik" },
-  { href: "/ilanlar?type=kiralik", label: "Kiralık", icon: KeyRound, type: "kiralik" },
-  { href: "/ilanlar?type=katkarsiligi", label: "Kat-Karşılığı", icon: MapPin, type: "katkarsiligi" },
+  { href: "/ilanlar/satilik", label: "Satılık", icon: Building2 },
+  { href: "/ilanlar/kiralik", label: "Kiralık", icon: KeyRound },
+  { href: "/ilanlar/kat-karsiligi-arsa", label: "Kat-Karşılığı", icon: MapPin },
   { href: "/iletisim", label: "İletişim", icon: Phone },
 ]
 
@@ -32,19 +32,9 @@ export function SiteHeader() {
   const [open, setOpen] = React.useState(false)
 
   const isActive = (href: string) => {
-  const [path, query] = href.split("?")
-
-  if (path === "/") return pathname === "/"
-  if (path !== "/ilanlar") return pathname.startsWith(path)
-
-  const currentType = new URLSearchParams(
-    typeof window !== "undefined" ? window.location.search : ""
-  ).get("type")
-
-  const hrefType = new URLSearchParams(query).get("type")
-
-  return currentType === hrefType
-}
+    if (href === "/") return pathname === "/"
+    return pathname.startsWith(href)
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl">
