@@ -21,9 +21,9 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { href: "/", label: "Ana Sayfa", icon: Home },
   { href: "/ilanlar", label: "Tümü", icon: List },
-  { href: "/ilanlar/satilik", label: "Satılık", icon: Building2 },
-  { href: "/ilanlar/kiralik", label: "Kiralık", icon: KeyRound },
-  { href: "/ilanlar/kat-karsiligi-arsa", label: "Kat-Karşılığı", icon: MapPin },
+  { href: "/ilanlar?type=satilik", label: "Satılık", icon: Building2 },
+  { href: "/ilanlar?type=kiralik", label: "Kiralık", icon: KeyRound },
+  { href: "/ilanlar?type=katkarsiligi", label: "Kat-Karşılığı", icon: MapPin },
   { href: "/iletisim", label: "İletişim", icon: Phone },
 ]
 
