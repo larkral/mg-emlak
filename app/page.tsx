@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { ListingCard } from "@/components/listing-card"
 import { supabase } from "@/lib/supabase"
 
-// 🔥 KRİTİK FIX: cache kapatıyoruz
+
 export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
