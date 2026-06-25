@@ -17,10 +17,9 @@ export default async function Page({
 
   let listings = data ?? []
 
-  // 🔥 filtre sistemi
   if (type) {
     listings = listings.filter((l) =>
-      normalizeStatus(l.status) === type
+      normalize(l.status) === type
     )
   }
 
@@ -37,10 +36,6 @@ export default async function Page({
   )
 }
 
-// 🔥 tek standart normalize
-function normalizeStatus(status?: string) {
-  return (status || "")
-    .toLowerCase()
-    .replace(/\s/g, "")
-    .replace("ı", "i")
+function normalize(s?: string) {
+  return (s || "").toLowerCase().replace(/\s/g, "")
 }
