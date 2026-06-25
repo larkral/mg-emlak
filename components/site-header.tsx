@@ -1,0 +1,134 @@
+"use client"
+
+import * as React from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import {
+  Building2,
+  Menu,
+  X,
+  Home,
+  List,
+  KeyRound,
+  MapPin,
+  Phone,
+} from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+const navItems = [
+  { href: "/", label: "Ana Sayfa", icon: Home },
+  { href: "/ilanlar", label: "Tümü", icon: List },
+  { href: "/ilanlar/satilik", label: "Satılık", icon: Building2 },
+  { href: "/ilanlar/kiralik", label: "Kiralık", icon: KeyRound },
+  { href: "/ilanlar/kat-karsiligi-arsa", label: "Kat-Karşılığı", icon: MapPin },
+  { href: "/iletisim", label: "İletişim", icon: Phone },
+]
+
+export function SiteHeader() {
+  const pathname = usePathname()
+  const [open, setOpen] = React.useState(false)
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname.startsWith(href)
+  }
+
+  return (
+    <header className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl">
+
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+
+        {/* LOGO */}
+<Link href="/" className="flex items-center gap-3 group">
+  <div className="relative">
+    <img
+      src="/logo.png"
+      alt="MG Emlak"
+      className="h-11 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+    />
+  </div>
+
+  <div className="hidden sm:flex flex-col">
+    <span className="text-sm font-bold tracking-tight text-foreground">
+      MG EMLAK
+    </span>
+    <span className="text-[11px] text-muted-foreground">
+      Afyonkarahisar Gayrimenkul
+    </span>
+  </div>
+</Link>
+        {/* DESKTOP NAV */}
+        <nav className="hidden md:flex items-center gap-1">
+
+          {navItems.map((item) => {
+            const Icon = item.icon
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 text-sm rounded-xl transition-all",
+                  isActive(item.href)
+                    ? "bg-black text-white shadow-md"
+                    : "text-muted-foreground hover:text-black hover:bg-muted"
+                )}
+              >
+                <Icon className="size-4" />
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+
+        {/* MOBILE BUTTON */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <div className="transition-transform duration-300">
+            {open ? <X /> : <Menu />}
+          </div>
+        </Button>
+      </div>
+
+      {/* MOBILE MENU */}
+      <div
+        className={cn(
+          "md:hidden overflow-hidden border-t bg-white/80 backdrop-blur-xl transition-all duration-300 ease-in-out",
+          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        )}
+      >
+        <div className="flex flex-col gap-1 px-3 py-2">
+
+          {navItems.map((item) => {
+            const Icon = item.icon
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 text-sm rounded-xl transition",
+                  isActive(item.href)
+                    ? "bg-black text-white"
+                    : "text-muted-foreground hover:bg-muted hover:text-black"
+                )}
+              >
+                <Icon className="size-4" />
+                {item.label}
+              </Link>
+            )
+          })}
+
+        </div>
+      </div>
+    </header>
+  )
+}
