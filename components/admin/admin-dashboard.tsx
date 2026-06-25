@@ -63,11 +63,11 @@ export function AdminDashboard() {
       (l.district ?? "").toLowerCase().includes(q)
     )
   }, [items, query])
-  
+
   async function logout() {
-  await supabase.auth.signOut()
-  window.location.href = "/admin/login"
-}
+    await supabase.auth.signOut()
+    window.location.href = "/admin/login"
+  }
 
   const stats = React.useMemo(() => [
     {
@@ -125,10 +125,16 @@ export function AdminDashboard() {
   }, [])
 
   async function handleSubmit(values: ListingFormValues) {
+    // 🔥 FEATURED GARANTİ NORMALIZATION
+    const safeValues = {
+      ...values,
+      featured: values.featured ?? false,
+    }
+
     if (editing) {
       const { data, error } = await supabase
         .from("listings")
-        .update(values)
+        .update(safeValues)
         .eq("id", editing.id)
         .select()
 
@@ -143,13 +149,14 @@ export function AdminDashboard() {
 
       toast.success("İlan güncellendi")
     } else {
-      const { id, ...listingData } = values
+      const { id, ...listingData } = safeValues
 
       const { data, error } = await supabase
         .from("listings")
         .insert([
           {
             ...listingData,
+            featured: listingData.featured ?? false, // 🔥 KRİTİK FIX
             created_at: new Date().toISOString(),
           },
         ])
@@ -207,20 +214,20 @@ export function AdminDashboard() {
           <LayoutDashboard className="size-4" />
           İlanlar
         </div>
+
         <br />
+
         <Button
-        onClick={logout}
-        className="bg-orange-500/90 text-white hover:bg-orange-500 shadow-sm hover:shadow-md transition-all"
-      >
-        Çıkış Yap
-      </Button>
+          onClick={logout}
+          className="bg-orange-500/90 text-white hover:bg-orange-500"
+        >
+          Çıkış Yap
+        </Button>
       </aside>
 
       {/* MAIN */}
       <div className="flex-1">
-
-        {/* HEADER */}
-        <div className="flex items-center justify-between border-b bg-card/80 p-4 backdrop-blur">
+        <div className="flex items-center justify-between border-b bg-card/80 p-4">
           <h1 className="text-lg font-semibold">İlan Yönetimi</h1>
 
           <Button onClick={openAdd}>
@@ -234,16 +241,11 @@ export function AdminDashboard() {
           {/* STATS */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((s) => (
-              <div
-                key={s.label}
-                className="flex items-center gap-4 rounded-xl border bg-card p-4"
-              >
+              <div key={s.label} className="flex items-center gap-4 rounded-xl border bg-card p-4">
                 <s.icon className="size-5 text-primary" />
                 <div>
                   <div className="text-xl font-semibold">{s.value}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {s.label}
-                  </div>
+                  <div className="text-xs text-muted-foreground">{s.label}</div>
                 </div>
               </div>
             ))}
@@ -291,11 +293,7 @@ export function AdminDashboard() {
                     </TableCell>
 
                     <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => openEdit(listing)}
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => openEdit(listing)}>
                         <Pencil />
                       </Button>
 
@@ -313,10 +311,7 @@ export function AdminDashboard() {
 
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell
-                      colSpan={4}
-                      className="text-center py-10 text-muted-foreground"
-                    >
+                    <TableCell colSpan={4} className="text-center py-10 text-muted-foreground">
                       Veri bulunamadı
                     </TableCell>
                   </TableRow>
@@ -324,7 +319,6 @@ export function AdminDashboard() {
               </TableBody>
             </Table>
           </div>
-
         </div>
       </div>
 
@@ -340,14 +334,10 @@ export function AdminDashboard() {
       <Dialog open={!!deleteTarget}>
         <DialogContent>
           <DialogTitle>Silinsin mi?</DialogTitle>
-          <DialogDescription>
-            Bu işlem geri alınamaz.
-          </DialogDescription>
+          <DialogDescription>Bu işlem geri alınamaz.</DialogDescription>
 
           <DialogFooter>
-            <Button onClick={() => setDeleteTarget(null)}>
-              İptal
-            </Button>
+            <Button onClick={() => setDeleteTarget(null)}>İptal</Button>
             <Button variant="destructive" onClick={confirmDelete}>
               Sil
             </Button>

@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase"
 export default async function HomePage() {
   const res = await supabase.from("listings").select("*")
   const listings = res.data ?? []
+  
 
   const featured = listings.filter((l) => l.featured)
 
