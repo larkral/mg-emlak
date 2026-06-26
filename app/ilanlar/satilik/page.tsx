@@ -3,12 +3,20 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ListingsExplorer } from "@/components/listings-explorer"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+export const fetchCache = "force-no-store"
+
 export default async function Page() {
-  const { data: listings } = await supabase
+  const { data: listings, error } = await supabase
     .from("listings")
     .select("*")
     .eq("status", "satilik")
     .order("created_at", { ascending: false })
+
+  if (error) {
+    console.log("Supabase error:", error)
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
