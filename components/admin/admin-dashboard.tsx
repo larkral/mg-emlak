@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabase"
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
   Building2,
@@ -47,6 +48,8 @@ const normalize = (s?: string) =>
   (s || "").toLocaleLowerCase("tr-TR")
 
 export function AdminDashboard() {
+  const router = useRouter()
+
   const [items, setItems] = React.useState<Listing[]>([])
   const [loading, setLoading] = React.useState(true)
   const [query, setQuery] = React.useState("")
@@ -125,7 +128,6 @@ export function AdminDashboard() {
   }, [])
 
   async function handleSubmit(values: ListingFormValues) {
-    // 🔥 FEATURED GARANTİ NORMALIZATION
     const safeValues = {
       ...values,
       featured: values.featured ?? false,
@@ -148,6 +150,7 @@ export function AdminDashboard() {
       )
 
       toast.success("İlan güncellendi")
+
     } else {
       const { id, ...listingData } = safeValues
 
@@ -156,7 +159,7 @@ export function AdminDashboard() {
         .insert([
           {
             ...listingData,
-            featured: listingData.featured ?? false, // 🔥 KRİTİK FIX
+            featured: listingData.featured ?? false,
             created_at: new Date().toISOString(),
           },
         ])
@@ -172,6 +175,9 @@ export function AdminDashboard() {
     }
 
     setFormOpen(false)
+
+    // 🔥 KRİTİK FIX
+    router.refresh()
   }
 
   async function confirmDelete() {
@@ -189,7 +195,11 @@ export function AdminDashboard() {
 
     setItems((prev) => prev.filter((l) => l.id !== deleteTarget.id))
     toast.success("İlan silindi")
+
     setDeleteTarget(null)
+
+    // 🔥 KRİTİK FIX
+    router.refresh()
   }
 
   if (loading) {
@@ -203,7 +213,6 @@ export function AdminDashboard() {
   return (
     <div className="flex min-h-screen bg-secondary/30">
 
-      {/* SIDEBAR */}
       <aside className="hidden lg:flex w-64 flex-col border-r bg-card p-5">
         <Link href="/" className="flex items-center gap-2">
           <Building2 className="size-5" />
@@ -225,7 +234,6 @@ export function AdminDashboard() {
         </Button>
       </aside>
 
-      {/* MAIN */}
       <div className="flex-1">
         <div className="flex items-center justify-between border-b bg-card/80 p-4">
           <h1 className="text-lg font-semibold">İlan Yönetimi</h1>
@@ -238,7 +246,6 @@ export function AdminDashboard() {
 
         <div className="p-6">
 
-          {/* STATS */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((s) => (
               <div key={s.label} className="flex items-center gap-4 rounded-xl border bg-card p-4">
@@ -251,7 +258,6 @@ export function AdminDashboard() {
             ))}
           </div>
 
-          {/* TABLE */}
           <div className="mt-6 rounded-xl border bg-card">
             <div className="flex items-center justify-between p-4">
               <h2 className="font-semibold">İlanlar</h2>
@@ -322,7 +328,6 @@ export function AdminDashboard() {
         </div>
       </div>
 
-      {/* FORM */}
       <ListingFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
@@ -330,7 +335,6 @@ export function AdminDashboard() {
         onSubmit={handleSubmit}
       />
 
-      {/* DELETE */}
       <Dialog open={!!deleteTarget}>
         <DialogContent>
           <DialogTitle>Silinsin mi?</DialogTitle>
