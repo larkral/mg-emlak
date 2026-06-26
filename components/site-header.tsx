@@ -17,72 +17,24 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { supabase } from "@/lib/supabase"
+
+const navItems = [
+  { href: "/", label: "Ana Sayfa", icon: Home },
+  { href: "/ilanlar", label: "Tümü", icon: List },
+  { href: "/ilanlar/satilik", label: "Satılık", icon: Building2 },
+  { href: "/ilanlar/kiralik", label: "Kiralık", icon: KeyRound },
+  { href: "/ilanlar/kat-karsiligi-arsa", label: "Kat-Karşılığı", icon: MapPin },
+  { href: "/iletisim", label: "İletişim", icon: Phone },
+]
 
 export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = React.useState(false)
 
-  const [counts, setCounts] = React.useState({
-    satilik: 0,
-    kiralik: 0,
-    katKarsiligi: 0,
-  })
-
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/"
     return pathname.startsWith(href)
   }
-
-  // 📊 DATA FETCH
-  React.useEffect(() => {
-    const fetchCounts = async () => {
-      const { data } = await supabase
-        .from("listings")
-        .select("type")
-
-      const satilik =
-        data?.filter((i) => i.type === "satilik").length || 0
-
-      const kiralik =
-        data?.filter((i) => i.type === "kiralik").length || 0
-
-      const katKarsiligi =
-        data?.filter((i) => i.type === "kat-karsiligi").length || 0
-
-      setCounts({
-        satilik,
-        kiralik,
-        katKarsiligi,
-      })
-    }
-
-    fetchCounts()
-  }, [])
-
-  // NAV ITEMS (DİNAMİK)
-  const navItems = [
-    { href: "/", label: "Ana Sayfa", icon: Home },
-    { href: "/ilanlar", label: "Tümü", icon: List },
-
-    {
-      href: "/ilanlar/satilik",
-      label: `Satılık (${counts.satilik})`,
-      icon: Building2,
-    },
-    {
-      href: "/ilanlar/kiralik",
-      label: `Kiralık (${counts.kiralik})`,
-      icon: KeyRound,
-    },
-    {
-      href: "/ilanlar/kat-karsiligi-arsa",
-      label: `Kat-Karşılığı (${counts.katKarsiligi})`,
-      icon: MapPin,
-    },
-
-    { href: "/iletisim", label: "İletişim", icon: Phone },
-  ]
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl">
@@ -90,25 +42,28 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
 
         {/* LOGO */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <img
-            src="/logo.png"
-            alt="MG Emlak"
-            className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
-          />
+<Link href="/" className="flex items-center gap-3 group">
+  <div className="flex items-center justify-center">
+    <img
+      src="/logo.png"
+      alt="MG Emlak"
+      className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+    />
+  </div>
 
-          <div className="hidden sm:flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-tight">
-              MG Emlak
-            </span>
-            <span className="text-[11px] text-muted-foreground">
-              Gayrimenkul Danışmanlığı
-            </span>
-          </div>
-        </Link>
+  <div className="hidden sm:flex flex-col leading-tight">
+    <span className="text-sm font-semibold tracking-tight">
+      MG Emlak
+    </span>
+    <span className="text-[11px] text-muted-foreground">
+      Gayrimenkul Danışmanlığı
+    </span>
+  </div>
+</Link>
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-1">
+
           {navItems.map((item) => {
             const Icon = item.icon
 
@@ -137,7 +92,9 @@ export function SiteHeader() {
           className="md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X /> : <Menu />}
+          <div className="transition-transform duration-300">
+            {open ? <X /> : <Menu />}
+          </div>
         </Button>
       </div>
 
@@ -149,7 +106,7 @@ export function SiteHeader() {
         )}
       >
         <div className="flex flex-col gap-1 px-3 py-2">
-          
+
           {navItems.map((item) => {
             const Icon = item.icon
 
