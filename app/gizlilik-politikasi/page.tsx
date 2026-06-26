@@ -86,7 +86,7 @@ export default function PrivacyPolicyPage() {
             Sorularınız mı var?
           </h3>
           <p className="mt-3 text-amber-100">
-            Bizimle iletişime geçmekten çekinmeyin.
+            Bizimle iletişime geçebilirsiniz.
           </p>
 
           <Link
