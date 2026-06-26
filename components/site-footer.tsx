@@ -80,13 +80,19 @@ export function SiteFooter() {
                 </Link>
               </li>
 
-              <li className="hover:text-amber-600 transition cursor-pointer">
+              <Link
+                href="/gizlilik-politikasi"
+                className="hover:text-amber-600 transition-colors"
+              >
                 Gizlilik Politikası
-              </li>
+              </Link>
 
-              <li className="hover:text-amber-600 transition cursor-pointer">
+              <Link
+                href="/kullanim-sartlari"
+                className="hover:text-amber-600 transition-colors"
+              >
                 Kullanım Şartları
-              </li>
+              </Link>
             </ul>
           </div>
 
