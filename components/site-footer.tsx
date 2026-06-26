@@ -109,13 +109,19 @@ export function SiteFooter() {
 
               <li className="flex items-center gap-3">
                 <Phone className="size-4 text-amber-600 shrink-0" />
-                <span>+90 543 289 52 52</span>
+                <span>+90 554 111 71 63</span>
               </li>
 
               <li className="flex items-center gap-3">
-                <Mail className="size-4 text-amber-600 shrink-0" />
-                <span>info@mgemlak.com</span>
-              </li>
+                  <Mail className="size-4 text-amber-600 shrink-0" />
+
+                  <a
+                    href="mailto:mgemlakgayrimenkul@gmail.com"
+                    className="transition-colors hover:text-amber-600"
+                  >
+                    mgemlakgayrimenkul.com
+                  </a>
+                </li>
 
             </ul>
           </div>
