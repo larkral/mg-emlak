@@ -298,7 +298,7 @@ export default async function ListingDetailPage({
                     <div className="mt-4 flex flex-col gap-2">
 
                       <a
-                        href={`https://wa.me/905432895252?text=${whatsappText}`}
+                        href={`https://wa.me/905322197656?text=${whatsappText}`}
                         target="_blank"
                       >
                         <Button className="w-full bg-green-500 text-white">
